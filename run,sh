@@ -1,0 +1,1 @@
+qemu-stsyem_x86-64 -hda ./boot.bin
