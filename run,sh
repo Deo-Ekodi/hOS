@@ -1,1 +1,2 @@
 qemu-stsyem_x86-64 -hda ./boot.bin
+# This won't run.. comma separated!
