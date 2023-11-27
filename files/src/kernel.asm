@@ -1,6 +1,7 @@
 [BITS 32]
 
 global _start
+; global problem ;; for testing interrupt
 extern kernel_main ;; entry point for C function
 DATA_SEG equ 0x10
 CODE_SEG equ 0x00
@@ -23,5 +24,9 @@ _start:
     call kernel_main
 
     jmp $
+
+; problem:
+;     mov eax, 0
+;     div eax
 
 times 512-($ - $$) db 0
