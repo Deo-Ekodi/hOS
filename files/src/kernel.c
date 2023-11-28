@@ -89,6 +89,4 @@ void kernel_main()
 
     idt_init();
     // problem(); // for testing interrupt
-
-    outb(0x60, 0xff);
 }

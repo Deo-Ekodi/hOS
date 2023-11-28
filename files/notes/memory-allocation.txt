@@ -1,0 +1,8 @@
+Heap
+
+A giant memory block that can be shared in a controlled manner
+One can request for memory and securely return it after use.
+
+Memory limits for a 32-bit kernel
+..Accesses only 32 bit memory addresses .. maximum of 4.29Gib regardless oof amount of RAM.
+..
