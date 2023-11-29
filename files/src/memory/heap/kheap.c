@@ -1,7 +1,9 @@
 #include "kheap.h"
 #include "heap.h"
-#include "/home/eigen/dev/c++/projects/hOS/files/src/config.h"
-#include "/home/eigen/dev/c++/projects/hOS/files/src/kernel.h"
+// #include "/home/eigen/dev/c++/projects/hOS/files/src/config.h"
+// #include "/home/eigen/dev/c++/projects/hOS/files/src/kernel.h"
+#include "config.h"
+#include "kernel.h"
 
 struct heap kernel_heap;
 struct heap_table kernel_heap_table;
@@ -19,4 +21,14 @@ void kheap_init()
     {
         print("Failed to create heap\n");
     }
+}
+
+void* kmalloc(size_t size)
+{
+    return heap_maloc(&kernel_heap, size);
+}
+
+void kfree(void* ptr)
+{
+    heap_free(&kernel_heap, ptr);
 }
