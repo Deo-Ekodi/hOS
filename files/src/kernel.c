@@ -4,6 +4,8 @@
 #include "idt/idt.h"
 #include "io/io.h"
 #include "memory/heap/kheap.h"
+#include "memory/paging/paging.h"
+#include "disk/disk.h"
 
 uint16_t *video_mem = 0;
 uint16_t terminal_row = 0;
@@ -81,6 +83,8 @@ void print(const char* str)
 
 // extern void problem(); // for testing interrupt
 
+static struct paging_4gb_chunk *kernel_chunk = 0;
+
 void kernel_main()
 {
     terminal_initialize();
@@ -93,16 +97,29 @@ void kernel_main()
     idt_init();
     // problem(); // for testing interrupt
 
-    void* ptr = kmalloc(50);
-    void* ptr2 = kmalloc(5000);
-    void* ptr3 = kmalloc(5600);
+    kernel_chunk = paging_new_4gb(PAGING_IS_WRITEABLE | PAGING_IS_PRESENT | PAGING_ACCESS_FROM_ALL);
+    // paging_switch(paging_4gb_chunk_get_directory(kernel_chunk));
 
-    kfree(ptr);
-    void* ptr4 = kmalloc(50);
+    char* ptr = kzalloc(4096);
+    paging_set(paging_4gb_chunk_get_directory(kernel_chunk), (void*)0x1000, (uint32_t)ptr | PAGING_ACCESS_FROM_ALL | PAGING_IS_PRESENT | PAGING_IS_WRITEABLE);
 
-    if(ptr || ptr2 || ptr3 || ptr4)
-    {
-        ;
-    }
+    enable_paging();
+
+    char buf[512];
+    disk_read_sector(0, 1, buf);
+
+    enable_interrupts();
+
+    // void* ptr = kmalloc(50);
+    // void* ptr2 = kmalloc(5000);
+    // void* ptr3 = kmalloc(5600);
+
+    // kfree(ptr);
+    // void* ptr4 = kmalloc(50);
+
+    // if(ptr || ptr2 || ptr3 || ptr4)
+    // {
+    //     ;
+    // }
 
 }
